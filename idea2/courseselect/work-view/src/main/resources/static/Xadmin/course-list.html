@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html>><!--xmlns:th="http://www.thymeleaf.org"-->
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="./login.html">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+          <input class="layui-input" placeholder="开始日" name="start" id="start">
+          <input class="layui-input" placeholder="截止日" name="end" id="end">
+          <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+      <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','./course-add.html',600,400)"><i class="layui-icon"></i>添加</button>
+        <span class="x-right" style="line-height:40px" >共有数据：<a></a> 条</span>
+      </xblock>
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>
+              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+            </th>
+            <th>ID</th>
+            <th>课程名</th>
+            <th>所需学院</th>
+            <th>课程组名称</th>
+            <th>学时</th>
+            <th>学分</th>
+            <th>课程组名称</th>
+            <th>简介</th>
+            <th>操作</th></tr>
+        </thead>
+        <tbody class="student-list">
+        </tbody>
+      </table>
+      <div class="page">
+        <div>
+          <a class="prev" href="">&lt;&lt;</a>
+          <span class="current">1</span>
+          <a class="next" href="">&gt;&gt;</a>
+        </div>
+      </div>
+    </div>
+    <script>
+      //$(document).ready(function(){})<!--            <td th:text="${student.sno}"></td>-->
+      $(function() {
+
+        $.ajax({
+          type: "post",
+          url: "/course/elctalls",
+          dataType: "json",
+          contentType: "application/json;charset=UTF-8",
+          data: JSON.stringify({pageNum: 1}),
+          success: function (data) {
+            var datas = "";
+            var lists = data.data;
+            var pages="";
+            console.log(data.data);
+            console.log(data);
+            for (var i = 0; i < lists.length; i++) {
+              datas += `
+            <tr>
+          <td>
+              <div id="checkBox" class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${lists[i].sno}'><i class="layui-icon">&#xe605;</i></div>
+          </td>
+            <td>${lists[i].course_id}</td>
+            <td>${lists[i].course_name}</td>
+            <td>${lists[i].college_name}</td>
+            <td>${lists[i].class_hour}</td>
+            <td>${lists[i].credit}</td>
+            <td>${lists[i].course_group_name}</td>
+            <td>${lists[i].introduction}</td>
+            <td>${lists[i].remark}</td>
+            <td class="td-manage">
+              <a title="编辑" class="bianji" onclick="x_admin_show('修改','./course-edit.html',600,400)" href="javascript:;">
+                 <input type="hidden" value="${lists[i].sno}" id="bianji2">
+                <i class="layui-icon">&#xe642;</i>
+              </a>
+              <a title="删除" class="shanchu" onclick="member_del()" href="javascript:;">
+                <input type="hidden" value="${lists[i].sno}" id="shanchu2">
+                <i class="layui-icon">&#xe640;</i>
+              </a>
+            </td>
+          </tr>
+            `
+            }
+            $(".student-list").html(datas);
+            form.render();
+          }
+        })
+      })
+     </script>
+    <script>
+      layui.use('form', function(){ var form = layui.form; form.render(); });//只有执行了这一步，部分表单元素才会自动修饰成功
+        // ……    //但是，如果你的HTML是动态生成的，自动渲染就会
+        // 失效  //因此你需要在相应的地方，执行下述方法来手动渲染
+        // ，跟这类似的还有 element.init();  form.render();});
+
+      layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
+      });
+      function edit(course_id){
+        localStorage.setItem("course_id",course_id);
+        x_admin_show('修改','./performancerule-edit.html',600,400);
+      }
+      function del(course_id){
+        layer.confirm('确认要删除吗？', function (index) {
+          $.ajax({
+            type: "post",
+            url: "/course/elcdelete/" + course_id,
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+              if(data.status==401){
+                alert("熔断开启，系统异常");
+                window.location.href="./login.html";
+                return;
+              }
+              if(data.status==200){
+                alert("删除成功");
+                window.location.reload();
+                $(".layui-form-checked").not('.header').parents('tr').remove();
+              }
+            }
+          })
+        });
+      }
+      function delAll () {
+        var datas = tableCheck.getData();
+        var snoList = [];
+        for (var i in datas) {
+          snoList.push(datas[i]);
+        }
+        layer.confirm('确认要删除吗？' + datas, function (index) {
+          //捉到所有被选中的，发异步进行删除
+          if (snoList == null || snoList == '') {
+            layer.msg('没有选择删除数据', {icon: 0});
+            return;
+          }
+          $(".layui-form-checked").not('.header').parents('tr').remove();
+          layer.msg('删除成功', {icon: 1});
+          $.ajax({
+            //地址
+            url: "/course/elcdels/"+snoList,
+            //提交方式
+            type: "POST",
+            data:  JSON.stringify({list:snoList}),
+            //发送请求时所传递的参数
+            //返回的数据使用json
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            //成功
+            success: function (data) {
+              if (data >= 1) {
+                window.parent.location.reload();
+                //console.log("用户名为："+data.username+"，密码为："+data.password);
+              } else {
+                layer.msg('请检查', {icon: 0});
+                return;
+              }
+            }
+          });
+
+        });
+      }
+       /*用户-停用*/
+      function member_stop(obj,id){
+          layer.confirm('确认要停用吗？',function(index){
+
+              if($(obj).attr('title')=='启用'){
+
+                //发异步把用户状态进行更改
+                $(obj).attr('title','停用')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                layer.msg('已停用!',{icon: 5,time:1000});
+
+              }else{
+                $(obj).attr('title','启用')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!',{icon: 5,time:1000});
+              }
+              
+          });
+      }
+      /*用户-删除*/
+
+
+    </script>
+    <script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();</script>
+  </body>
+
+</html>

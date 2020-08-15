@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/adminteacher/adminteacher.iml" filepath="$PROJECT_DIR$/adminteacher/adminteacher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/courseselect.iml" filepath="$PROJECT_DIR$/courseselect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/eureka-server/eureka-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/students/students.iml" filepath="$PROJECT_DIR$/students/students.iml" />
+      <module fileurl="file://$PROJECT_DIR$/teacher/teacher.iml" filepath="$PROJECT_DIR$/teacher/teacher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/work-view/work-view.iml" filepath="$PROJECT_DIR$/work-view/work-view.iml" />
+    </modules>
+  </component>
+</project>

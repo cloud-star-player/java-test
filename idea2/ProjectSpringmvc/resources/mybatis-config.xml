@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    
+<configuration>
+	<!-- 起别名 -->
+	<typeAliases>
+		<package name="com.systop.pojo"/>
+	</typeAliases>
+	<!-- Mapper信息 -->
+	<mappers>
+		<mapper resource = "com/systop/dao/UserLoginMapper.xml" />
+		<mapper resource = "com/systop/dao/CustomerMapper.xml" />
+		<mapper resource = "com/systop/dao/InterviewMapper.xml" />
+		<mapper resource = "com/systop/dao/BasedictMapper.xml" />
+	</mappers>
+</configuration>

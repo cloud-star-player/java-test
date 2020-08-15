@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.systop.dao.InterviewMapper">
+     <select id="uionselect" parameterType="Integer" resultMap="interviewResult">
+          select * from interview i,customer c where i.inter_cust_id=c.cust_id and i.inter_cust_id=#{inter_cust_id}
+     </select>
+     <resultMap type="Interview" id="interviewResult">
+         <id property="inter_id" column="inter_id"/>
+         <result property="inter_cust_id" column="inter_cust_id"/>
+         <result property="inter_user_id" column="inter_user_id"/>
+         <result property="inter_record" column="inter_record"/>
+         <result property="inter_datatime" column="inter_datatime"/>
+         <association property="cust" javaType="Customer"> 
+         <id property="cust_id" column="inter_cust_id"/>
+         <result property="cust_name" column="cust_name"/>
+         </association> 
+     </resultMap>
+     
+     <select id="interselects" resultMap="interviewsResult">
+          select i.inter_id,i.inter_datetime,i.inter_record,c.cust_id,c.cust_name,s.user_name from interview i,customer c,sys_user s where i.inter_cust_id=c.cust_id and i.inter_user_id=s.user_id
+     </select>
+     <resultMap type="Interview" id="interviewsResult">
+         <id property="inter_id" column="inter_id"/>
+         <result property="inter_record" column="inter_record"/>
+         <result property="inter_datetime" column="inter_datetime"/>
+         
+         <association property="customer" javaType="customer">
+         <result property="cust_id" column="cust_id"/> 
+         <result property="cust_name" column="cust_name"/>
+         </association> 
+         
+          <association property="userlogin" javaType="userlogin"> 
+         <result property="user_name" column="user_name"/>
+         </association> 
+     </resultMap>
+     
+     <select id="interviewall" resultType="interview">
+     select * from interview
+     </select>
+     <insert id="interviewadd" parameterType="interview">
+		insert into interview (inter_user_id,inter_cust_id,inter_record) 
+		values (#{userlogin.user_id},#{customer.cust_id},#{inter_record})
+	</insert>
+	<select id="interviewbyid" parameterType="Integer" resultType="interview">
+	    select * from interview where inter_cust_id=#{inter_cust_id}
+	</select>
+	
+</mapper>

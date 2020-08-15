@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.systop.dao.CustomerMapper">
+   <select id="customerall" resultType="customer">
+		select * from customer ORDER BY cust_id desc
+  </select>
+    <!--按id查询customer表-->
+	<select id="findById" parameterType="Integer" resultType="customer">
+		select * from customer where cust_id=#{cust_id}
+	</select>
+	<select id="customerx" resultType="customer">
+	    select cust_id,cust_name from customer
+	</select>
+	<!--按id更新数据-->
+   <update id="update" parameterType="customer">
+   update customer
+   <set>
+       <if test="cust_name!=null and cust_name!=''">
+            cust_name=#{cust_name},
+       </if>
+        <if test="cust_user_id!=null and cust_user_id!=''">
+            cust_user_id=#{cust_user_id},
+       </if>
+        <if test="cust_create_id !=null and cust_create_id!=''">
+            cust_create_id=#{cust_create_id},
+       </if>
+       <if test="cust_source !=null and cust_source!=''">
+            cust_source=#{cust_source},
+       </if>
+       <if test="cust_industry !=null and cust_industry!=''">
+            cust_industry=#{cust_industry},
+       </if>
+       <if test="cust_level !=null and cust_level!=''">
+            cust_level=#{cust_level},
+       </if>
+       <if test="cust_linkman !=null and cust_linkman!=''">
+            cust_linkman=#{cust_linkman},
+       </if>
+        <if test="cust_phone !=null and cust_phone!=''">
+            cust_phone=#{cust_phone},
+       </if>
+       <if test="cust_mobile !=null and cust_mobile!=''">
+            cust_mobile=#{cust_mobile},
+       </if>
+        <if test="cust_zipcode !=null and cust_zipcode!=''">
+            cust_zipcode=#{cust_zipcode},
+       </if>
+        <if test="cust_address!=null and cust_address!=''">
+            cust_address=#{cust_address},
+       </if>
+       <if test="cust_createtime !=null">
+            cust_createtime=#{cust_createtime},
+       </if>
+   </set>
+   where cust_id=#{cust_id}
+   </update>
+   <!--提取语句-->
+   <sql id="insertsql">
+   cust_name,cust_user_id,cust_create_id,cust_source,cust_industry,cust_level,cust_linkman,cust_phone,cust_mobile,cust_zipcode,cust_address,cust_createtime
+   </sql>
+   <sql id="insertsqlw">
+   #{cust_name},#{cust_user_id},#{cust_create_id},#{cust_source},#{cust_industry},#{cust_level},#{cust_linkman},#{cust_phone},#{cust_mobile},#{cust_zipcode},#{cust_address},#{cust_createtime}
+   </sql>
+   <sql id="insertsqla">
+    #{cust.cust_name},#{cust.cust_user_id},#{cust.cust_create_id},#{cust.cust_source},#{cust.cust_industry},#{cust.cust_level},#{cust.cust_linkman},#{cust.cust_phone},#{cust.cust_mobile},#{cust.cust_zipcode},#{cust.cust_address},#{cust.cust_createtime}
+   </sql>
+   <!--单个插入数据-->
+   <insert id="add" parameterType="customer">
+		insert into customer (<include refid="insertsql" />) values 
+		(<include refid="insertsqlw"/>)
+   </insert>
+   <!--批量插入数据-->
+   <insert id="insertemp" parameterType="java.util.List">
+        insert into customer (<include refid="insertsql" />) values
+        <foreach collection="list" item="cust" index="index" separator="," open="" close="">
+            (<include refid="insertsqla"/>)
+        </foreach>
+   </insert>
+   
+   
+   <!--提取语句-->
+   <sql id="find">
+    cust_id,cust_name,cust_user_id,cust_create_id,cust_source,cust_industry,cust_level,cust_linkman,cust_phone,cust_mobile,cust_zipcode,cust_address,cust_createtime
+   </sql>
+   <!--分页查询-->
+    <select id="findpage" resultType="customer">
+        select <include refid="find"/> from customer  order by cust_id desc limit ${Mpcounts},${Dpage}
+   </select>
+   <!--查询数据条数-->
+   <select id="bncounts" resultType="Integer">
+        select count(*) from customer
+   </select>
+   <delete id="deletefyid" parameterType="Integer">
+   delete from customer where cust_id =#{cust_id}
+   </delete>
+   <!--批量删除-->
+   <delete id="delete" parameterType="List">
+        delete from customer where cust_id in 
+        <foreach collection="list" item="cust_id" index="index" separator="," open="(" close=")">
+            #{cust_id}
+        </foreach>
+   </delete>
+  <select id="custbyname" resultType="customer">
+	    select cust_name from customer
+  </select>
+  <select id="customerfindc" parameterType="customer" resultType="customer">
+        select * from customer where 1=1
+        <if test="cust_name!=null and cust_name!=''">
+        and cust_name like concat('%',#{cust_name},'%')
+        </if>
+        <if test="cust_source!=null and cust_source!=''">
+        and cust_source=#{cust_source}
+        </if>
+        <if test="cust_industry!=null and cust_industry!=''">
+        and cust_industry=#{cust_industry}
+        </if>
+        <if test="cust_level!=null and cust_level!=''">
+        and cust_level=#{cust_level}
+        </if>
+  </select>
+</mapper>

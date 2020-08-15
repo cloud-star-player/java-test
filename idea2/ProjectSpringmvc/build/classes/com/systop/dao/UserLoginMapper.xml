@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.systop.dao.UserLoginMapper">
+	<select id="login" parameterType="userlogin" resultType="userlogin">
+		select * from sys_user where user_code = #{user_code} and user_password=#{user_password}
+	</select>
+	<insert id="register" parameterType="userlogin">
+	    insert into sys_user (user_code,user_name,user_password,user_state) values (${user_code},${user_name},${user_password},${user_state})
+	</insert>
+	<select id="usebyname" resultType="userlogin">
+	    select user_name from sys_user
+	</select>
+	<select id="userx" resultType="userlogin">
+	    select user_id,user_name from sys_user
+	</select>
+</mapper>
